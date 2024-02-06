@@ -11,6 +11,33 @@ import 'quran_text.dart';
 import 'sajdah_verses.dart';
 import 'surah_data.dart';
 
+String removeTashkeelAndQuranicSymbols(String text) {
+  final pattern = RegExp(
+      r'[\u0617-\u061A\u064B-\u0652\u0653\u0656\u0657\u065e\u0672-\u06D6\u06D7-\u06E8\u06E9\u06EA-\u06ED\u08D4-\u08E1]');
+  return text
+      .replaceAll(pattern, '')
+      .replaceAll("ٱ", "ا")
+      .replaceAll('\u0670', 'ا')
+      .replaceAll('ىا', 'ى')
+      .replaceAll("هاذا", "هذا")
+      .replaceAll("هاذه", "هذه")
+      .replaceAll("هاذان", "هذان")
+      .replaceAll("هاؤلاء", "هؤلاء")
+      .replaceAll("ذالك", "ذلك")
+      .replaceAll("كذالك", "كذلك")
+      .replaceAll("أولائك", "أولئك")
+      .replaceAll("الرحمان", "الرحمن")
+      .replaceAll("إلاه", "إله")
+      .replaceAll("جايء", "جيء")
+      .replaceAll("أرءيت", "أرأيت")
+      .replaceAll("الحيواة", "الحياة")
+      .replaceAll("الزكواة", "الزكاة")
+      .replaceAll("الصلواة", "الصلاة")
+      .replaceAll("ءا", "آ")
+      .replaceAll(RegExp(r"(?<=[\u0600-\u06FF])ى(?=[\u0600-\u06FF])"), "ا")
+      .replaceAll(RegExp(r"(?<=[\u0600-\u06FF])ـٔ(?=[\u0600-\u06FF])"), "ئ");
+}
+
 ///Takes [pageNumber] and returns a list containing Surahs and the starting and ending Verse numbers in that page
 ///
 ///Example:
@@ -440,7 +467,7 @@ Map searchWords(List<String> words) {
   for (var i in quranText) {
     bool exist = false;
     for (var word in words) {
-      if (i['content']
+      if (removeTashkeelAndQuranicSymbols(i['content'])
           .toString()
           .toLowerCase()
           .contains(word.toString().toLowerCase())) {
